@@ -1,0 +1,5 @@
+
+"keywords" : describe your project using related keywords.
+"author" : specifies who created the project, and can consist of a string or an object with contact or other details.
+"dependencies" : Packages required by your application in production.
+"devDependencies" : Packages that are only needed for local development and testing.
