@@ -13,7 +13,11 @@
   },
   "keywords": [
     "task",
-    "manager"
+    "manager",
+    "nodejs",
+    "expressjs",
+    "mysql",
+    "mariadb"
   ],
   "author": "Kevin CARRTIGUEANE",
   "license": "ISC",
@@ -22,8 +26,12 @@
   },
   "homepage": "https://github.com/Kcarttigueane/TASK-MANAGER#readme",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.0",
     "dotenv": "^16.0.0",
     "express": "^4.18.1",
+    "jsonwebtoken": "^8.5.1",
+    "mysql2": "^2.3.3",
     "url": "^0.11.0"
   },
   "devDependencies": {

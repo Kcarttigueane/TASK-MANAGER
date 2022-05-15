@@ -1,34 +1,55 @@
+require("dotenv").config();
 
 const express = require("express");
+const mysql = require('mysql2');
+var bodyParser = require('body-parser');
+
 const app = express();
 
-require("dotenv").config();
 const port = process.env.PORT || 3000;
 
-app.get("/name/:name", (req, res) => {
-    if (req.is('html')) {
-        res.send(`<h1>Hello ${req.params.name}</h1>`);
-    } else if (req.is('json')) {
-        res.json({
-            name: req.params.name
-        });
-    }
-    else {
-        res.send(`Hello ${req.params.name}`);
-    }
+// create application/json parser
+var jsonParser = bodyParser.json()
+
+// app.use(express.bodyParser());
+
+// create application/x-www-form-urlencoded parser
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
+
+var con = mysql.createConnection({
+    host: process.env.HOST,
+    user: "kevin",
+    password: process.env.PASSWORD,
+    database: "epytodo"
 });
 
-app.get("/date", (req, res) => {
-    var date = new Date();
-    var year = date.getFullYear();
-    var month = date.getMonth();
-    if (month < 10) {
-        month = "0" + month;
-    }
-    var day = date.getDate();
-    res.send(year + "-" + month + "-" + day);
+con.connect(function (err) {
+    if (err) throw err;
+    console.log("Connected!");
 });
+
+app.get("/api/:table", (req, res) => {
+    let table_name = req.params.table;
+    let sql = `SELECT * FROM ${table_name}`;
+    con.query(sql, function (err, result) {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+
+// insert a record inside a table using body parser
+// app.post("/api/:table", urlencodedParser, (req, res) => {
+//     let table_name = req.params.table;
+//     let sql = `INSERT INTO ${table_name} SET ?`;
+//     con.query(sql, req.body, function (err, result) {
+//         if (err) throw err;
+//         res.send(result);
+//     });
+// });
+
+// con.end();
+
 
 app.listen(port, () => {
-    console.log(` Example app listening at http ://localhost:${port}`) ;
+    console.log(` Example app listening at http ://localhost:${port}`);
 });
