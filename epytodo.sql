@@ -1,4 +1,5 @@
 CREATE OR REPLACE DATABASE epytodo;
+
 USE epytodo;
 
 CREATE OR REPLACE TABLE user (
@@ -12,7 +13,7 @@ CREATE OR REPLACE TABLE user (
     );
 
 CREATE OR REPLACE TABLE todo (
-        id BIGINT NOT NULL AUTO_INCREMENT,
+        id BIGINT NOT UNSIGNED NULL AUTO_INCREMENT,
         title VARCHAR(255) NOT NULL,
         description VARCHAR(255) NOT NULL,
         created_at DATETIME NOT NULL DEFAULT NOW(),
@@ -22,4 +23,3 @@ CREATE OR REPLACE TABLE todo (
         CONSTRAINT pk_todo PRIMARY KEY (id),
         CONSTRAINT fk_todo_user FOREIGN KEY (user_id) REFERENCES user(id)
     );
-

@@ -45,3 +45,25 @@ DROP INDEX - deletes an index
 //     var day = date.getDate();
 //     res.send(year + "-" + month + "-" + day);
 // });
+
+
+// app.get("/api/:table", (req, res) => {
+//     let table_name = req.params.table;
+//     let sql = `SELECT * FROM ${table_name}`;
+//     con.query(sql, function (err, result) {
+//         if (err) throw err;
+//         res.send(result);
+//     });
+// });
+
+
+// insert a record inside a table using body parser
+// app.post("/api/:table", urlencodedParser, (req, res) => {
+//     let table_name = req.params.table;
+//     let sql = `INSERT INTO ${table_name} SET ?`;
+//     con.query(sql, req.body, function (err, result) {
+//         if (err) throw err;
+//         res.send(result);
+//     });
+// });
+    
