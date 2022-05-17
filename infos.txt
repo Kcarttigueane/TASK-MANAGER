@@ -66,4 +66,13 @@ DROP INDEX - deletes an index
 //         res.send(result);
 //     });
 // });
-    
+
+
+// const user_password = await db.query(db_query).catch(err => {
+//     if (result.length > 0) {
+//         res.json({
+//             "msg": "Account already exists"
+//         })
+//     }
+
+// });
