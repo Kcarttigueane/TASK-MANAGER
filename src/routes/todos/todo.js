@@ -6,31 +6,14 @@ const router = express.Router();
 
 const {authenticateToken} = require("../../middleware/auth");
 
-router.get("/todos", authenticateToken, (req, res) => {
-    let db_query = `SELECT * FROM todo`;
+const {view_all_the_todos, view_the_todo_using_id, delete_a_todo_using_id} = require('./todos.query');
 
-    con.query(db_query, function (err, result) {
-        if (err) {
-            res.status(400).json({
-                "msg": "Bad parameter"
-            })
-        }
-        else res.status(200).json(result);
-    });
+router.get("/todos", authenticateToken, (req, res) => {
+    view_all_the_todos(res);
 });
 
 router.get("/todos/:id", authenticateToken, (req, res) => {
-    let db_query = `SELECT * FROM todo WHERE id = '${req.params.id}'`;
-    console.log(db_query);
-
-    con.query(db_query, function (err, result) {
-        if (err) {
-            res.status(400).json({
-                "msg": "Bad parameter"
-            })
-        }
-        else res.status(200).json(result);
-    });
+    view_the_todo_using_id(res, req.params.id);
 });
 
 router.post("/todos", authenticateToken, (req, res) => {
@@ -60,6 +43,7 @@ router.post("/todos", authenticateToken, (req, res) => {
         else res.status(200).json(req.body);
     });
 });
+
 
 router.put("/todos/:id", authenticateToken, (req, res) => {
     const { title, description, due_time, user_id, status } = req.body;
@@ -92,21 +76,7 @@ router.put("/todos/:id", authenticateToken, (req, res) => {
 });
 
 router.delete('/todos/:id', authenticateToken, (req, res) => {
-    let db_query = `DELETE FROM todo WHERE id = '${req.params.id}'`;
-
-    con.query(db_query, function (err, result) {
-        if (err) {
-            console.error(err);
-            res.status(400).json({
-                "msg": "Bad parameter"
-            })
-        }
-        else {
-            res.status(200).json({
-                "msg": "Successfully deleted record number: " + req.params.id,
-            });
-        }
-    });
+    delete_a_todo_using_id(res, req.params.id);
 });
 
 module.exports = router;
