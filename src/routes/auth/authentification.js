@@ -1,14 +1,19 @@
+var config = require('../../config/db');
+var con = config.con;
 
+var bcrypt = require('bcryptjs');
+const saltRounds = 10;
 
+const express = require("express");
+const router = express.Router();
 
-app.post("/register", (req, res) => {
-    let email = req.body.email;
-    let name = req.body.name;
-    let first_name = req.body.firstname;
-    let password = req.body.password;
+const { generateAccessToken } = require("../../middleware/auth");
 
-    if (typeof email === "undefined" || typeof name === "undefined" || typeof first_name === "undefined" || typeof password === "undefined") {
-        res.json({
+router.post("/register", (req, res) => {
+    const { email, name, firstname, password } = req.body;
+
+    if (email === "undefined" || name === "undefined" || firstname === "undefined" || password === "undefined") {
+        res.status(400).json({
             "msg": "Bad parameter"
         })
     }
@@ -18,29 +23,71 @@ app.post("/register", (req, res) => {
     con.query(db_query, function (err, result) {
         if (err) {
             if (result.length > 0) {
-                res.json({
+                res.status(401).json({
                     "msg": "Account already exists"
                 })
             }
         }
-        // ! FUNCTION USE TO HASH THE PASSWORD THEN STORE IT IN THE DB
-        bcrypt.genSalt(10, function(err, salt) {
-            bcrypt.hash("B4c0/\/", salt, function(err, hash) {
-                let insert_query = `INSERT INTO user (email, password, name, firstname) VALUES ('${email}', '${hash}', '${name}', '${first_name}')`;
-                console.log(insert_query);
-                con.query(insert_query, function (err, result) {
-                    if (err) {
-                        res.json({
-                            "msg": "Bad parameter"
-                        })
-                    }
-                    else {
-                        res.json({
-                            "msg": "Account created"
-                        })
-                    }
-                });
-            });
+        const hash = bcrypt.hashSync(password, saltRounds);
+
+        let insert_query = `INSERT INTO user (email, password, name, firstname) VALUES ('${email}', '${hash}', '${name}', '${firstname}')`;
+
+        con.query(insert_query, function (err, result) {
+            if (err) {
+                res.status(400).json({
+                    "msg": "Bad parameter"
+                })
+            }
+            else {
+                res.status(200).json({
+                    "msg": "Account created"
+                })
+            }
         });
     });
 });
+
+router.post("/login", (req, res) => {
+    const { email, password } = req.body;
+
+    if (email === "undefined" || password === "undefined") {
+        res.status(400).json({
+            "msg": "Bad parameter"
+        })
+    }
+
+    let db_query = `SELECT * FROM user WHERE email = '${email}'`;
+    console.log(db_query);
+
+    con.query(db_query, function (err, result) {
+        if (!(result.length > 0)) {
+            res.status(404).json({
+                "msg": "Not found",
+            })
+        }
+        if (err) {
+            if (result === "undefined" || !(result.length > 0)) {
+                res.status(400).json({
+                    "msg": "Bad parameter"
+                })
+            }
+        }
+        else {
+            const db_user = result[0];
+            bcrypt.compare(password, db_user.password, function (err, result) {
+                if (err) {
+                    res.status(401).json({
+                        "msg": "Invalid Credentials",
+                    })
+                }
+                else {
+                    res.status(200).json({
+                        "token": generateAccessToken(db_user),
+                    })
+                }
+            });
+        }
+    });
+});
+
+module.exports = router;

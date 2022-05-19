@@ -76,3 +76,9 @@ DROP INDEX - deletes an index
 //     }
 
 // });
+
+
+const authHeader = req.headers['authorization'];
+const token = authHeader && authHeader.split(' ')[1];
+// console.log(token);
+// NOTE: You should verify the first word is Bearer
