@@ -10,7 +10,7 @@ function authenticateToken(req, res, next) {
         token = req.headers.authorization.split(" ")[1]
     }
     else {
-        return res.status(403).send({
+        return res.status(401).send({
             "msg": "No token, authorization denied",
         })
     }
@@ -29,14 +29,6 @@ function authenticateToken(req, res, next) {
         req.user = user;
         next();
     });
-}
-
-function ValidateEmail(mail) {
-    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(myForm.emailAddr.value)) {
-        return (true);
-    }
-    alert("You have entered an invalid email address!");
-    return (false);
 }
 
 module.exports = {

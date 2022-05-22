@@ -1,12 +1,9 @@
-var config = require('../../config/db');
-var con = config.con;
-
 const express = require("express");
 const router = express.Router();
 
 const {authenticateToken} = require("../../middleware/auth");
 
-const {view_all_the_todos, view_the_todo_using_id, delete_a_todo_using_id} = require('./todos.query');
+const {view_all_the_todos, view_the_todo_using_id, create_a_todo, update_a_todo, delete_a_todo_using_id} = require('./todos.query');
 
 router.get("/todos", authenticateToken, (req, res) => {
     view_all_the_todos(res);
@@ -18,61 +15,25 @@ router.get("/todos/:id", authenticateToken, (req, res) => {
 
 router.post("/todos", authenticateToken, (req, res) => {
     const { title, description, due_time, user_id, status } = req.body;
-    console.log(status);
 
-    if (title === 'undefined' || description === 'undefined' || due_time === 'undefined', user_id === 'undefined') {
+    if (title === undefined || description === undefined || due_time === undefined, user_id === undefined) {
         res.status(400).json({
             "msg": "Bad parameter"
         })
     }
-    let db_query;
-
-    // ! DEMANDER A L'AER POURQUOI CA MARCHE PAS AU NIVEAU DU DEFAULT
-    if (status === 'undefined')
-        db_query = `INSERT INTO todo (title, description, due_time, user_id, status) VALUES ('${title}', '${description}', '${due_time}', '${user_id}', DEFAULT)`;
-    else
-        db_query = `INSERT INTO todo (title, description, due_time, user_id, status) VALUES ('${title}', '${description}', '${due_time}', '${user_id}', 'not started')`;
-
-
-    con.query(db_query, function (err, result) {
-        if (err) {
-            res.status(400).json({
-                "msg": "Bad parameter",
-            })
-        }
-        else res.status(200).json(req.body);
-    });
+    create_a_todo(title, description, due_time, user_id, status, res);
 });
 
 
 router.put("/todos/:id", authenticateToken, (req, res) => {
     const { title, description, due_time, user_id, status } = req.body;
 
-    if (title === 'undefined' || description === 'undefined' || due_time === 'undefined', user_id === 'undefined') {
+    if (title === undefined || description === undefined || due_time === undefined, user_id === undefined) {
         res.status(400).json({
             "msg": "Bad parameter"
         })
     }
-    let db_query;
-
-    console.log('==+>' + status);
-
-    if (status === 'undefined') {
-        db_query = `UPDATE todo SET title = '${title}', description = '${description}', due_time = '${due_time}', user_id = '${user_id}', status = 'not started' WHERE id = '${req.params.id}'`;
-    }
-    else {
-        db_query = `UPDATE todo SET title = '${title}', description = '${description}', due_time = '${due_time}', user_id = '${user_id}', status = 'not started' WHERE id = '${req.params.id}'`;
-    }
-
-    con.query(db_query, function (err, result) {
-        if (err) {
-            console.error(err);
-            res.status(400).json({
-                "msg": "Bad parameter"
-            })
-        }
-        else res.status(200).json(result);
-    });
+    update_a_todo(title, description, due_time, user_id, status, res);
 });
 
 router.delete('/todos/:id', authenticateToken, (req, res) => {

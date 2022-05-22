@@ -13,9 +13,7 @@ exports.all_user_task = function (res, id) {
 }
 
 exports.all_user_information = function (res, param) {
-    let db_query = `SELECT * FROM user WHERE id = '${param}' OR email = '${param}'`;
-
-    con.query(db_query, function (err, result) {
+    con.query(`SELECT * FROM user WHERE id = '${param}' OR email = '${param}'`, function (err, result) {
         if (err) {
             res.status(400).json({
                 "msg": "Bad parameter"
@@ -27,7 +25,6 @@ exports.all_user_information = function (res, param) {
 
 exports.update_user_information= function(res, id, email, name, firstname, hash) {
     let db_query = `UPDATE user SET email = '${email}', name = '${name}', firstname = '${firstname}', password = '${hash}' WHERE id = '${id}'`;
-    console.log(db_query);
 
     con.query(db_query, function (err, result) {
         if (err) {
@@ -40,10 +37,7 @@ exports.update_user_information= function(res, id, email, name, firstname, hash)
 }
 
 exports.delete_user = function(res, id) {
-    let db_query = `DELETE FROM user WHERE id = '${id}'`;
-    console.log(db_query);
-
-    con.query(db_query, function (err, result) {
+    con.query(`DELETE FROM user WHERE id = '${id}'`, function (err, result) {
         if (err) {
             res.status(400).json({
                 "msg": "Bad parameter"
