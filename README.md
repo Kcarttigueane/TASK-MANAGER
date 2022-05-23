@@ -34,19 +34,22 @@ We also made a SQL script to create the database quickly :
   <br/>
 </p>
 
-## Installation :mag_right:
+## How To Use :mag_right:
 
+* Git clone the repositery :<br /> 
 ```
- git clone https://github.com/Mikatech/EpyTodo.git
- cd EpyTodo
- npm install
+git clone git@github.com:Kcarttigueane/TASK-MANAGER.git
+```
+* First build the project executing : <br />
+```
+make
+```
+* Run the program :<br />
+```
+npm run watch
 ```
 
 ## Start project :checkered_flag:
-
-```
-npm start
-```
 
 You can use curl to perform your queries afterwards \
 or use the repository's postman collection which has all possible queries
