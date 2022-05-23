@@ -1,30 +1,28 @@
 {
-  "name": "task-manager",
+  "name": "todolist",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "watch": "nodemon index.js",
+    "watch": "nodemon ./src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Kcarttigueane/TASK-MANAGER.git"
+    "url": "git+https://github.com/EpitechPromo2026/B-WEB-200-LYN-2-1-epytodo-tom.desalmand.git"
   },
   "keywords": [
-    "task",
-    "manager",
     "nodejs",
     "expressjs",
     "mysql",
     "mariadb"
   ],
-  "author": "Kevin CARRTIGUEANE",
+  "author": "Kevin CATRTIGUEANE and Tom DESALMANDS and filman RUSOM",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Kcarttigueane/TASK-MANAGER/issues"
+    "url": "https://github.com/EpitechPromo2026/B-WEB-200-LYN-2-1-epytodo-tom.desalmand/issues"
   },
-  "homepage": "https://github.com/Kcarttigueane/TASK-MANAGER#readme",
+  "homepage": "https://github.com/EpitechPromo2026/B-WEB-200-LYN-2-1-epytodo-tom.desalmand#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.0",

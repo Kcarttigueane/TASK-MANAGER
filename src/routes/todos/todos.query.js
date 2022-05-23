@@ -28,14 +28,17 @@ exports.view_the_todo_using_id = function (res, id) {
     });
 }
 
-exports.create_a_todo = function (title, description, due_time, user_id, status, res) {
-    if (status === 'undefined')
-        db_query = `INSERT INTO todo (title, description, due_time, user_id, status) VALUES ('${title}', '${description}', '${due_time}', '${user_id}', DEFAULT)`;
-    else
+exports.create_a_todo = function (title, description, due_time, user_id, status, res, req) {
+    if (status === undefined) {
         db_query = `INSERT INTO todo (title, description, due_time, user_id, status) VALUES ('${title}', '${description}', '${due_time}', '${user_id}', 'not started')`;
+    }
+    else {
+        db_query = `INSERT INTO todo (title, description, due_time, user_id, status) VALUES ('${title}', '${description}', '${due_time}', '${user_id}', '${status}')`;
+    }
 
     con.query(db_query, function (err, result) {
         if (err) {
+            console.log(err);
             res.status(400).json({
                 "msg": "Bad parameter",
             })
@@ -47,7 +50,7 @@ exports.create_a_todo = function (title, description, due_time, user_id, status,
 exports.update_a_todo = function(title, description, due_time, user_id, status, req, res) {
     let db_query;
 
-    if (status === 'undefined') {
+    if (status === undefined) {
         db_query = `UPDATE todo SET title = '${title}', description = '${description}', due_time = '${due_time}', user_id = '${user_id}', status = 'not started' WHERE id = '${req.params.id}'`;
     }
     else {
@@ -65,7 +68,7 @@ exports.update_a_todo = function(title, description, due_time, user_id, status, 
     });
 }
 
-exports.delete_a_todo_using_id = function (res, id) {
+exports.delete_a_todo_using_id = function (res, req, id) {
     let db_query = `DELETE FROM todo WHERE id = '${id}'`;
 
     con.query(db_query, function (err, result) {

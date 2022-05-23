@@ -12,9 +12,9 @@ app.use(express.raw());
 
 const port = process.env.PORT || 3000;
 
-const auth_router = require('./src/routes/auth/authentification');
-const user_router = require('./src/routes/user/user');
-const todo_router = require('./src/routes/todos/todo');
+const auth_router = require('./routes/auth/authentification');
+const user_router = require('./routes/user/user');
+const todo_router = require('./routes/todos/todo');
 
 app.use(auth_router);
 app.use(user_router);

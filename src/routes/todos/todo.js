@@ -21,7 +21,7 @@ router.post("/todos", authenticateToken, (req, res) => {
             "msg": "Bad parameter"
         })
     }
-    create_a_todo(title, description, due_time, user_id, status, res);
+    create_a_todo(title, description, due_time, user_id, status, res, req);
 });
 
 
@@ -33,11 +33,11 @@ router.put("/todos/:id", authenticateToken, (req, res) => {
             "msg": "Bad parameter"
         })
     }
-    update_a_todo(title, description, due_time, user_id, status, res);
+    update_a_todo(title, description, due_time, user_id, status, req, res);
 });
 
 router.delete('/todos/:id', authenticateToken, (req, res) => {
-    delete_a_todo_using_id(res, req.params.id);
+    delete_a_todo_using_id(res, req, req.params.id);
 });
 
 module.exports = router;

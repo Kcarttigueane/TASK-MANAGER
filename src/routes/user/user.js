@@ -36,7 +36,7 @@ router.put("/users/:id", authenticateToken, (req, res) => {
         })
     }
     const hash = bcrypt.hashSync(password, saltRounds);
-    update_user_information(req.params.id, email, name, firstname, hash);
+    update_user_information(res, req.params.id, email, name, firstname, hash);
 });
 
 router.delete('/users/:id', authenticateToken, (req, res) => {

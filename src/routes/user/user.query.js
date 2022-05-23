@@ -23,7 +23,7 @@ exports.all_user_information = function (res, param) {
     });
 }
 
-exports.update_user_information= function(res, id, email, name, firstname, hash) {
+exports.update_user_information = function (res, id, email, name, firstname, hash) {
     let db_query = `UPDATE user SET email = '${email}', name = '${name}', firstname = '${firstname}', password = '${hash}' WHERE id = '${id}'`;
 
     con.query(db_query, function (err, result) {
@@ -36,7 +36,7 @@ exports.update_user_information= function(res, id, email, name, firstname, hash)
     });
 }
 
-exports.delete_user = function(res, id) {
+exports.delete_user = function (res, id) {
     con.query(`DELETE FROM user WHERE id = '${id}'`, function (err, result) {
         if (err) {
             res.status(400).json({
